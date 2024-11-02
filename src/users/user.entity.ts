@@ -16,6 +16,6 @@ export class User {
 
   @AfterInsert()
   logInsert() {
-    console.log('Inserted user with id:', this.id);
+    console.log('User Berhasil Ditambahkan Dengan id:', this.id);
   }
 }
