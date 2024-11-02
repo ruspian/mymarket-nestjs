@@ -1,4 +1,11 @@
-import { AfterInsert, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  AfterInsert,
+  AfterUpdate,
+  AfterRemove,
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -16,6 +23,16 @@ export class User {
 
   @AfterInsert()
   logInsert() {
-    console.log('User Berhasil Ditambahkan Dengan id:', this.id);
+    console.log('User Berhasil Ditambahkan Dengan Id:' + this.id);
+  }
+
+  @AfterUpdate()
+  logUpdate() {
+    console.log('User Dengan Id:' + this.id + 'Berhasil Diupdate');
+  }
+
+  @AfterRemove()
+  logRemove() {
+    console.log('User Dengan Id:' + this.id + 'Berhasil Dihapus');
   }
 }
