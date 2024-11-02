@@ -28,11 +28,11 @@ export class User {
 
   @AfterUpdate()
   logUpdate() {
-    console.log('User Dengan Id:' + this.id + 'Berhasil Diupdate');
+    console.log('User Dengan Id:' + this.id + ' Berhasil Diupdate');
   }
 
   @AfterRemove()
   logRemove() {
-    console.log('User Dengan Id:' + this.id + 'Berhasil Dihapus');
+    console.log('User Dengan Id:' + this.id + ' Berhasil Dihapus');
   }
 }
