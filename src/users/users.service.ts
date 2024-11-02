@@ -10,7 +10,7 @@ export class UsersService {
   ) {}
 
   create(name: string, email: string, password: string) {
-    const user = this.usersRepository.create({ name, email, password });
-    return this.usersRepository.save(user);
+    const user = this.usersRepository.create({ name, email, password }); // belum menyimpan ke DB
+    return this.usersRepository.save(user); // menyimpan ke DB
   }
 }
