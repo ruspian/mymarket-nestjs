@@ -14,6 +14,7 @@ import { Item } from './items/item.entity';
       type: 'sqlite',
       database: 'db.sqlite',
       entities: [User, Item],
+      // synchronize: hanya untuk development tidak untuk production pada saat production ubah synchronize menjadi false atau matikan synchronize
       synchronize: true,
     }),
     UsersModule,
