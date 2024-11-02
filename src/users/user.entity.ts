@@ -23,16 +23,16 @@ export class User {
 
   @AfterInsert()
   logInsert() {
-    console.log('User Berhasil Ditambahkan Dengan Id:' + this.id);
+    console.log('User Berhasil Ditambahkan Dengan Id: ' + this.id);
   }
 
   @AfterUpdate()
   logUpdate() {
-    console.log('User Dengan Id:' + this.id + ' Berhasil Diupdate');
+    console.log('User Dengan Id: ' + this.id + ' Berhasil Diupdate');
   }
 
   @AfterRemove()
   logRemove() {
-    console.log('User Dengan Id:' + this.id + ' Berhasil Dihapus');
+    console.log('User Dengan Id: ' + this.id + ' Berhasil Dihapus');
   }
 }

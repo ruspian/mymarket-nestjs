@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
@@ -20,24 +20,20 @@ export class UsersService {
     return this.usersRepository.save(user); // menyimpan ke DB
   }
 
-  findOne(id: number) {
-    return this.usersRepository.findOneBy({ id });
+  async findOne(id: number) {
+    const user = await this.usersRepository.findOneBy({ id });
+
+    return user;
   }
 
   async update(id: number, attrs: Partial<User>) {
     const user = await this.findOne(id);
-    if (!user) {
-      throw new Error('User Tidak Ditemukan');
-    }
     Object.assign(user, attrs);
     return this.usersRepository.save(user);
   }
 
   async remove(id: number) {
     const user = await this.findOne(id);
-    if (!user) {
-      throw new Error('User Tidak Ditemukan');
-    }
     return this.usersRepository.remove(user);
   }
 }
