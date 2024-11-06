@@ -26,16 +26,16 @@ export class UsersController {
   ) {}
 
   // set data ke session cookie
-  @Get('/pet/:pet')
-  setPet(@Param('pet') pet: string, @Session() session: any) {
-    session.pet = pet;
-  }
+  // @Get('/pet/:pet')
+  // setPet(@Param('pet') pet: string, @Session() session: any) {
+  //   session.pet = pet;
+  // }
 
   // mengambil data dari session cookie
-  @Get('/pet')
-  getPet(@Session() session: any) {
-    return session.pet;
-  }
+  // @Get('/pet')
+  // getPet(@Session() session: any) {
+  //   return session.pet;
+  // }
 
   @Get()
   findAllUsers(@Query('email') email: string) {
@@ -63,12 +63,29 @@ export class UsersController {
   }
 
   @Post('/register')
-  register(@Body() body: createUserDto) {
-    return this.authService.register(body.name, body.email, body.password);
+  async register(@Body() body: createUserDto, @Session() session: any) {
+    const user = await this.authService.register(
+      body.name,
+      body.email,
+      body.password,
+    );
+
+    session.userId = user.id;
+
+    return user;
   }
 
   @Post('/login')
-  login(@Body() body: LoginUserDto) {
-    return this.authService.login(body.email, body.password);
+  async login(@Body() body: LoginUserDto, @Session() session: any) {
+    const user = await this.authService.login(body.email, body.password);
+    session.userId = user.id;
+    return user;
+  }
+
+  // melihat data user yang sedang login dan register
+  @Get('auth/whoami')
+  async whoAmI(@Session() session: any) {
+    const user = await this.usersService.findOne(session.userId);
+    return user;
   }
 }
