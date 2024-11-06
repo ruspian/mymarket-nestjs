@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Query,
+  Session,
 } from '@nestjs/common';
 import { createUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
@@ -23,6 +24,18 @@ export class UsersController {
     private usersService: UsersService,
     private authService: AuthService,
   ) {}
+
+  // set data ke session cookie
+  @Get('/pet/:pet')
+  setPet(@Param('pet') pet: string, @Session() session: any) {
+    session.pet = pet;
+  }
+
+  // mengambil data dari session cookie
+  @Get('/pet')
+  getPet(@Session() session: any) {
+    return session.pet;
+  }
 
   @Get()
   findAllUsers(@Query('email') email: string) {
