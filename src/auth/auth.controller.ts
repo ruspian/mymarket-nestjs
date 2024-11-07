@@ -6,15 +6,15 @@ import {
   Session,
   UseInterceptors,
 } from '@nestjs/common';
-import { LoginUserDto } from 'src/auth/dtos/login-user.dto';
-import { createUserDto } from 'src/users/dtos/create-user.dto';
-import { UsersService } from 'src/users/users.service';
+import { LoginUserDto } from '../auth/dtos/login-user.dto';
+import { createUserDto } from '../users/dtos/create-user.dto';
+import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
-import { Serialize } from 'src/interceptors/serialize.interceptor';
-import { UserDto } from 'src/users/dtos/user.dto';
+import { Serialize } from '../interceptors/serialize.interceptor';
+import { UserDto } from '../users/dtos/user.dto';
 import { CurrentUser } from './decorators/current-user.decorator';
-import { CurrentUserInterceptor } from 'src/auth/interceptors/current-user.interceptor';
-import { User } from 'src/users/user.entity';
+import { CurrentUserInterceptor } from '../auth/interceptors/current-user.interceptor';
+import { User } from '../users/user.entity';
 
 @Controller('auth')
 @Serialize(UserDto)
