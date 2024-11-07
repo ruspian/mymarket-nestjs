@@ -60,24 +60,15 @@ describe('AuthService', () => {
 
     // memastikan password sudah di hash
     expect(user.password).not.toEqual('password');
-
     const [salt, hash] = user.password.split('.');
 
     expect(salt).toBeDefined();
     expect(hash).toBeDefined();
   });
 
+  // tes untuk cek apakah email sudah digunakan atau sama
   it('should fail to create an user with an existing email', async () => {
-    fakeUsersService.findAll = () => {
-      return Promise.resolve([
-        {
-          id: 1,
-          name: 'name1',
-          email: 'email@email.com',
-          password: 'password1',
-        } as User,
-      ]);
-    };
+    await service.register('name1', 'email@email.com', 'password1');
     await expect(
       service.register('name1', 'email@email.com', 'password1'),
     ).rejects.toThrow('Email sudah digunakan!');
@@ -92,16 +83,7 @@ describe('AuthService', () => {
 
   // membuat test untuk login dengan password yang salah
   it('should fail to login with wrong password', async () => {
-    fakeUsersService.findAll = () => {
-      return Promise.resolve([
-        {
-          id: 1,
-          name: 'name1',
-          email: 'email@email.com',
-          password: 'password1',
-        } as User,
-      ]);
-    };
+    await service.register('name1', 'email@email.com', 'password1');
     await expect(service.login('email@email.com', 'password2')).rejects.toThrow(
       'Password salah!',
     );
