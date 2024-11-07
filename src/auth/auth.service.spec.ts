@@ -8,11 +8,23 @@ describe('AuthService', () => {
   let fakeUsersService: Partial<UsersService>;
 
   beforeEach(async () => {
+    const users: User[] = [];
+
     // membuat fake user service untuk testing
     fakeUsersService = {
-      findAll: () => Promise.resolve([]),
+      findAll: (email: string) => {
+        const user = users.filter((user) => user.email === email);
+        return Promise.resolve(user);
+      },
       create: (name: string, email: string, password: string) => {
-        return Promise.resolve({ id: 1, name, email, password } as User);
+        const user = {
+          id: Math.floor(Math.random() * 999999),
+          name,
+          email,
+          password,
+        } as User;
+        users.push(user);
+        return Promise.resolve(user);
       },
     };
 
@@ -97,17 +109,7 @@ describe('AuthService', () => {
 
   // membuat test untuk login dengan email dan password yang benar
   it('should login with correct credentials', async () => {
-    fakeUsersService.findAll = () => {
-      return Promise.resolve([
-        {
-          id: 1,
-          name: 'name1',
-          email: 'email@email.com',
-          password:
-            '1c20b29385a6929b.74744e3234b83d8768edf667b66c3159ab361b5e66b83526cbe7eb29765f07a0',
-        } as User,
-      ]);
-    };
+    await service.register('name1', 'email@email.com', 'password1');
     const user = await service.login('email@email.com', 'password1');
     expect(user).toBeDefined();
   });
