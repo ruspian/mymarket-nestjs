@@ -41,6 +41,8 @@ describe('AuthService', () => {
       'password1',
     );
 
+    // console.log(user);
+
     // memastikan name sudah di set
     expect(user.name).toBe('name1');
 
@@ -74,5 +76,39 @@ describe('AuthService', () => {
     await expect(service.login('email@email.com', 'password1')).rejects.toThrow(
       'Email tidak terdaftar!',
     );
+  });
+
+  // membuat test untuk login dengan password yang salah
+  it('should fail to login with wrong password', async () => {
+    fakeUsersService.findAll = () => {
+      return Promise.resolve([
+        {
+          id: 1,
+          name: 'name1',
+          email: 'email@email.com',
+          password: 'password1',
+        } as User,
+      ]);
+    };
+    await expect(service.login('email@email.com', 'password2')).rejects.toThrow(
+      'Password salah!',
+    );
+  });
+
+  // membuat test untuk login dengan email dan password yang benar
+  it('should login with correct credentials', async () => {
+    fakeUsersService.findAll = () => {
+      return Promise.resolve([
+        {
+          id: 1,
+          name: 'name1',
+          email: 'email@email.com',
+          password:
+            '1c20b29385a6929b.74744e3234b83d8768edf667b66c3159ab361b5e66b83526cbe7eb29765f07a0',
+        } as User,
+      ]);
+    };
+    const user = await service.login('email@email.com', 'password1');
+    expect(user).toBeDefined();
   });
 });
