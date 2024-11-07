@@ -5,6 +5,7 @@ import { UsersService } from 'src/users/users.service';
 import { AuthService } from './auth.service';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDto } from 'src/users/dtos/user.dto';
+import { CurrentUser } from './decorators/current-user.decorator';
 
 @Controller('auth')
 @Serialize(UserDto)
@@ -42,8 +43,7 @@ export class AuthController {
 
   // route melihat data user yang sedang login dan register
   @Get('/whoami')
-  async whoAmI(@Session() session: any) {
-    const user = await this.usersService.findOne(session.userId);
+  async whoAmI(@CurrentUser() user: string) {
     return user;
   }
 }
