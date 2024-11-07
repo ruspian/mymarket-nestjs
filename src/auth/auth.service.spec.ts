@@ -68,4 +68,11 @@ describe('AuthService', () => {
       service.register('name1', 'email@email.com', 'password1'),
     ).rejects.toThrow('Email sudah digunakan!');
   });
+
+  // membuat test untuk login dengan email yang salah
+  it('should fail to login with wrong email', async () => {
+    await expect(service.login('email@email.com', 'password1')).rejects.toThrow(
+      'Email tidak terdaftar!',
+    );
+  });
 });
