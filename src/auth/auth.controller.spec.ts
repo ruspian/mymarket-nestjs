@@ -16,6 +16,10 @@ describe('AuthController', () => {
       login: (email: string, password: string) => {
         return Promise.resolve({ id: 1, email, password } as User);
       },
+
+      register: (name: string, email: string, password: string) => {
+        return Promise.resolve({ id: 1, name, email, password } as User);
+      },
     };
 
     // menyiapkan mock module
@@ -53,6 +57,27 @@ describe('AuthController', () => {
 
     expect(user).toEqual({
       id: 1,
+      email: 'email@email.com',
+      password: 'emailpass',
+    });
+
+    expect(session.userId).toEqual(1);
+  });
+
+  // tes untuk user register
+  it('should user register', async () => {
+    const session = {
+      userId: 10,
+    };
+
+    const user = await controller.register(
+      { name: 'name', email: 'email@email.com', password: 'emailpass' },
+      session,
+    );
+
+    expect(user).toEqual({
+      id: 1,
+      name: 'name',
       email: 'email@email.com',
       password: 'emailpass',
     });
