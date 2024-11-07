@@ -5,10 +5,11 @@ import { User } from 'src/users/user.entity';
 
 describe('AuthService', () => {
   let service: AuthService;
+  let fakeUsersService: Partial<UsersService>;
 
   beforeEach(async () => {
     // membuat fake user service untuk testing
-    const fakeUsersService: Partial<UsersService> = {
+    fakeUsersService = {
       findAll: () => Promise.resolve([]),
       create: (name: string, email: string, password: string) => {
         return Promise.resolve({ id: 1, name, email, password } as User);
@@ -40,6 +41,9 @@ describe('AuthService', () => {
       'password1',
     );
 
+    // memastikan name sudah di set
+    expect(user.name).toBe('name1');
+
     // memastikan password sudah di hash
     expect(user.password).not.toEqual('password');
 
@@ -47,5 +51,21 @@ describe('AuthService', () => {
 
     expect(salt).toBeDefined();
     expect(hash).toBeDefined();
+  });
+
+  it('should fail to create an user with an existing email', async () => {
+    fakeUsersService.findAll = () => {
+      return Promise.resolve([
+        {
+          id: 1,
+          name: 'name1',
+          email: 'email@email.com',
+          password: 'password1',
+        } as User,
+      ]);
+    };
+    await expect(
+      service.register('name1', 'email@email.com', 'password1'),
+    ).rejects.toThrow('Email sudah digunakan!');
   });
 });
