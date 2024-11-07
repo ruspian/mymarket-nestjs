@@ -82,7 +82,13 @@ export class UsersController {
     return user;
   }
 
-  // melihat data user yang sedang login dan register
+  // route logout dan mengubah userId menjadi null
+  @Post('/logout')
+  logout(@Session() session: any) {
+    session.userId = null;
+  }
+
+  // route melihat data user yang sedang login dan register
   @Get('auth/whoami')
   async whoAmI(@Session() session: any) {
     const user = await this.usersService.findOne(session.userId);
