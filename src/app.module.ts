@@ -8,17 +8,34 @@ import { User } from './users/user.entity';
 import { Item } from './items/item.entity';
 import { AuthModule } from './auth/auth.module';
 import cookieSession = require('cookie-session');
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    // konesi database
-    TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'db.sqlite',
-      entities: [User, Item],
-      // synchronize: hanya untuk development tidak untuk production pada saat production ubah synchronize menjadi false atau matikan synchronize
-      synchronize: true,
+    // config
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
+
+    // konesi database dengan variable yang ada di file .env
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'sqlite',
+        database: configService.get<string>('DB_NAME'),
+        entities: [User, Item],
+        synchronize: configService.get<boolean>('DB_SYNCHRONIZE'),
+      }),
+    }),
+    // TypeOrmModule.forRoot({
+    //   type: 'sqlite',
+    //   database: 'db.sqlite',
+    //   entities: [User, Item],
+    //   // synchronize: hanya untuk development tidak untuk production pada saat production ubah synchronize menjadi false atau matikan synchronize
+    //   synchronize: true,
+    // }),
+
     UsersModule,
     ItemsModule,
     AuthModule,
