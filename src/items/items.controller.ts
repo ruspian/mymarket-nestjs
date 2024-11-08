@@ -1,10 +1,13 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { createItemDto } from './dtos/create-item.dto';
+import { ItemsService } from './items.service';
 
 @Controller('items')
 export class ItemsController {
+  constructor(private itemsService: ItemsService) {}
+
   @Post()
   createItem(@Body() body: createItemDto) {
-    return 'ini adalah aksi menambahkan item baru';
+    return this.itemsService.create(body);
   }
 }
