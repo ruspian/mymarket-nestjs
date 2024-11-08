@@ -25,7 +25,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         type: 'sqlite',
         database: configService.get<string>('DB_NAME'),
         entities: [User, Item],
-        synchronize: configService.get<boolean>('DB_SYNCHRONIZE'),
+        synchronize: true,
       }),
     }),
     // TypeOrmModule.forRoot({
