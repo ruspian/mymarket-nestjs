@@ -10,8 +10,4 @@ export class QueryItemDto {
 
   @IsString()
   category: string;
-
-  @Transform(({ value }) => Number(value))
-  @IsNumber()
-  year: number;
 }
