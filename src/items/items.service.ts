@@ -4,12 +4,21 @@ import { createItemDto } from './dtos/create-item.dto';
 import { Item } from './item.entity';
 import { Repository } from 'typeorm';
 import { User } from 'src/users/user.entity';
+import { QueryItemDto } from './dtos/query-item.dto';
 
 @Injectable()
 export class ItemsService {
   constructor(
     @InjectRepository(Item) private itemsRepository: Repository<Item>,
   ) {}
+
+  getAllItems(queryItemDto: QueryItemDto) {
+    return this.itemsRepository
+      .createQueryBuilder()
+      .select('*')
+      .where('approved = :approved', { approved: true })
+      .getRawMany();
+  }
 
   create(item: createItemDto, user: User) {
     const newItem = this.itemsRepository.create(item);
