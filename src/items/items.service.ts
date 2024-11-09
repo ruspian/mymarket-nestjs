@@ -17,6 +17,7 @@ export class ItemsService {
       .createQueryBuilder()
       .select('*')
       .where('approved LIKE :approved', { approved: true });
+
     if (queryItemDto.name) {
       query.andWhere('name LIKE :name', { name: `%${queryItemDto.name}%` });
     }
